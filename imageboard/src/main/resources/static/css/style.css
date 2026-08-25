@@ -66,6 +66,14 @@ nav .brand {
     background-color: #f1f3f5;
 }
 
+.board-table tr.odd {
+    background-color: gray;
+}
+
+.board-table tr.even {
+    background-color: mediumpurple;
+}
+
 .board-table a {
     color: #212529;
     text-decoration: none;
