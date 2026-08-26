@@ -35,6 +35,32 @@
         <div class="board-content" th:text="${board.content}">
             게시글 내용
         </div>
+        <!-- templates/board/detail.html — 이미지 갤러리 추가 -->
+
+        <!-- 첨부 이미지 갤러리 -->
+        <div th:if="${not #lists.isEmpty(board.images)}" style="margin: 20px 0;">
+            <h4 style="margin-bottom: 10px;">첨부 이미지 (<span th:text="${#lists.size(board.images)}">0</span>개)</h4>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <div th:each="image : ${board.images}" style="position:relative;">
+                    <!-- 썸네일 클릭 시 원본 이미지 표시 -->
+                    <a th:href="@{'/images/' + ${image.storedName}}" target="_blank">
+                        <img th:src="@{'/thumbnails/' + ${image.storedName}}"
+                             th:alt="${image.originalName}"
+                             style="width:150px; height:150px; object-fit:cover;
+                            border-radius:6px; border:1px solid #dee2e6;
+                            cursor:pointer; transition:opacity .2s;"
+                             onmouseover="this.style.opacity=0.8"
+                             onmouseout="this.style.opacity=1">
+                    </a>
+                    <!-- 파일명 표시 -->
+                    <div th:text="${image.originalName}"
+                         style="font-size:0.75rem; color:#6c757d; margin-top:4px;
+                        max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 

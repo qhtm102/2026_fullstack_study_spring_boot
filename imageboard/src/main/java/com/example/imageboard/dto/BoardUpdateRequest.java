@@ -1,7 +1,6 @@
 package com.example.imageboard.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,9 +9,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class BoardCreateRequest {
+public class BoardUpdateRequest {
 
     private String title;
+
     private String content;
 
     // 이미지 파일 목록 (선택 입력, 최대 5개)

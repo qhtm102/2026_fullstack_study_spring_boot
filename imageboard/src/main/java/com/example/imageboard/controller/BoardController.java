@@ -2,14 +2,13 @@ package com.example.imageboard.controller;
 
 import com.example.imageboard.dto.BoardCreateRequest;
 import com.example.imageboard.dto.BoardResponse;
+import com.example.imageboard.dto.BoardUpdateRequest;
 import com.example.imageboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,13 +20,28 @@ public class BoardController {
     private final BoardService boardService;
 
     /** 게시글 목록 */
+//    @GetMapping(path = { "", "/", "/list" })
+//    public String list(Model model) {
+//        List<BoardResponse> boards = boardService.findAll();
+//        model.addAttribute("boards", boards); // Model 타입 전달인자에 데이터를 저장하면 View에서 사용할 수 있습니다.
+//     //   return "board/list-old";           // templates/board/list-old.html
+//        return "board/list";           // templates/board/list-old.html
+//    }
+
+    // BoardController.java — list 메서드 수정
     @GetMapping(path = { "", "/", "/list" })
-    public String list(Model model) {
-        List<BoardResponse> boards = boardService.findAll();
-        model.addAttribute("boards", boards); // Model 타입 전달인자에 데이터를 저장하면 View에서 사용할 수 있습니다.
-//        return "board/list-old";           // templates/board/list-old.html
-        return "board/list";           // templates/board/list-old.html
+    public String list(@RequestParam(defaultValue = "") String keyword,
+                       @RequestParam(defaultValue = "0") int page,
+                       Model model) {
+
+        Page<BoardResponse> boardPage = boardService.findAllByPage(keyword, page, 2);
+
+        model.addAttribute("boardPage", boardPage);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("currentPage", page);
+        return "board/list";
     }
+
 
     /** 게시글 상세 */
     @GetMapping("/{id}")
@@ -47,9 +61,35 @@ public class BoardController {
     /** 게시글 저장 */
     @PostMapping
     public String create(BoardCreateRequest request, Model model) {
-        System.out.println(request.getTitle() + " / " + request.getContent());
+//        System.out.println(request.getTitle() + " / " + request.getContent());
         Long id = boardService.create(request);
         return "redirect:/boards/" + id;
     }
 
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        boardService.delete(id);
+        return "redirect:/boards";
+    }
+
+    /** 게시글 수정 폼 */
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+        BoardResponse board = boardService.findById(id);
+        BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest();
+        boardUpdateRequest.setTitle(board.getTitle());
+        boardUpdateRequest.setContent(board.getContent());
+        model.addAttribute("board", board);
+        model.addAttribute("boardUpdateRequest", boardUpdateRequest);
+        return "board/edit";           // templates/board/edit.html
+    }
+
+    /** 게시글 수정 */
+    @PutMapping("/{id}")
+    public String update(@PathVariable Long id,
+                         @ModelAttribute BoardUpdateRequest request
+                         ) {
+        boardService.update(id, request);
+        return "redirect:/boards/" + id;
+    }
 }

@@ -11,7 +11,7 @@
     <div class="board-detail">
         <h2>게시글 작성</h2>
 
-        <form th:action="@{/boards}" th:object="${boardCreateRequest}" method="post">
+        <form th:action="@{/boards}" th:object="${boardCreateRequest}" method="post" enctype="multipart/form-data">
 
             <div class="form-group">
                 <label for="title">제목</label>
@@ -33,6 +33,16 @@
                    th:errors="*{content}">내용 오류</p>
             </div>
 
+            <!-- 이미지 업로드 -->
+            <div class="form-group">
+                <label>이미지 첨부 <span style="color:#aaa; font-weight:normal;">(최대 5개, jpg·png·gif·webp, 파일당 10MB)</span></label>
+                <input class="form-control" type="file" name="images"
+                       accept="image/*" multiple>
+
+                <!-- 미리보기 영역 -->
+                <div id="preview-area" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+            </div>
+
             <div style="display:flex; gap:8px; justify-content:flex-end;">
                 <a class="btn btn-secondary" th:href="@{/boards}">취소</a>
                 <button class="btn btn-primary" type="submit">저장</button>
@@ -45,4 +55,27 @@
 <footer th:replace="~{layout/default :: footer}"></footer>
 
 </body>
+
+<!-- 이미지 미리보기 스크립트 -->
+<script>
+    document.querySelector('input[type="file"]').addEventListener('change', function (e) {
+        const preview = document.querySelector('#preview-area');
+        preview.innerHTML = '';
+
+        const files = Array.from(e.target.files).slice(0, 5); // 최대 5개
+        files.forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onload = ev => {
+                const img = document.createElement('img');
+                img.src = ev.target.result;
+                img.style.cssText = 'width:120px; height:120px; object-fit:cover; border-radius:4px; border:1px solid #dee2e6;';
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
+
 </html>
