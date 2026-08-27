@@ -125,6 +125,23 @@ public class BoardService {
         // boardRepository.deleteById(id); // 해당 id의 데이터가 있는지 알 수 없는 상태에서 삭제 시도
     }
 
+    // 게시글 이미지 삭제
+    public void deleteImage(Long boardId, Long imageId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
+        AttachedImage image = imageRepository.findById(imageId)
+                .orElseThrow(() -> new IllegalArgumentException("이미지를 찾을 수 없습니다."));
+
+        // Board에서 이미지 제거 (orphanRemoval로 DB 레코드 자동 삭제)
+        board.getImages().remove(image);
+        boardRepository.save(board);
+
+        // 실제 파일 삭제
+        System.out.println(">>>>>>>>>>>>>> " + image.getStoredName());
+        fileService.delete(image.getStoredName());
+    }
+
 
     /** Entity → DTO 변환 */
     private BoardResponse toResponse(Board board) {

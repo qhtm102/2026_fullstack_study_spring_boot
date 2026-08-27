@@ -6,6 +6,7 @@ import com.example.imageboard.dto.BoardUpdateRequest;
 import com.example.imageboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +71,19 @@ public class BoardController {
     public String delete(@PathVariable Long id) {
         boardService.delete(id);
         return "redirect:/boards";
+    }
+
+    /** 이미지 개별 삭제 */
+//    @DeleteMapping("/{boardId}/images/{imageId}")
+    @PostMapping("/{boardId}/images/{imageId}")
+    @ResponseBody // return 이 html 파일 이름이 아닌, 문자값을 반환,응답 하는 설정
+//    public String deleteImage(@PathVariable Long boardId,
+    public ResponseEntity<Void> deleteImage(@PathVariable Long boardId,
+                                      @PathVariable Long imageId) {
+
+        boardService.deleteImage(boardId, imageId);
+        // return "redirect:/boards/" + boardId + "/edit";
+        return ResponseEntity.noContent().build(); // 성공적인 처리 + 응답 결과 없음 ( status code : 204 )
     }
 
     /** 게시글 수정 폼 */

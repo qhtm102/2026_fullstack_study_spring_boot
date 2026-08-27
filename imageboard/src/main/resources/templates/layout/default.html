@@ -17,6 +17,14 @@
             &nbsp;|&nbsp;
             <a th:href="@{/members/login}">로그인</a>
         </div>
+
+        <!-- layout/default.html — nav 아래에 추가 -->
+        <div th:if="${errorMessage}"
+             style="background:#f8d7da; color:#842029; padding:12px 20px;
+            border-bottom:1px solid #f5c2c7; text-align:center;">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
     </div>
 </nav>
 
