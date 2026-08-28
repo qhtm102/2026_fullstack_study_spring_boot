@@ -15,6 +15,7 @@ public class BoardResponse {
     private String title;
     private String content;
     private String author;
+    private Long memberId;       // 추가 — 작성자 ID (뷰에서 권한 비교용)
     private int viewCount;
     private String thumbnailUrl;
     private List<ImageResponse> images;    // 추가
