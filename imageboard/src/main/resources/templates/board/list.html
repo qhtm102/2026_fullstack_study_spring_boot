@@ -10,8 +10,8 @@
 
 <div class="container">
     <div class="page-header">
-        <h2>게시글 목록</h2>
-        <a class="btn btn-primary" th:href="@{/boards/create}">글쓰기</a>
+        <h2 th:text="#{board.list.title}">게시글 목록</h2>
+        <a class="btn btn-primary" th:href="@{/boards/create}" th:text="#{board.link.create}">글쓰기</a>
     </div>
 
     <!-- 검색 폼 -->

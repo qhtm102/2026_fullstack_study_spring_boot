@@ -10,6 +10,7 @@ import com.example.imageboard.repository.AttachedImageRepository;
 import com.example.imageboard.repository.BoardRepository;
 import com.example.imageboard.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BoardService {
 
@@ -38,6 +40,8 @@ public class BoardService {
     // 게시글 목록을 페이지 단위로 조회
     public Page<BoardResponse> findAllByPage(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);  // page: 0-based 페이지 번호, size: 한 페이지에 포함되는 데이터 개수
+
+        log.info(String.format("---------> {} / {}"), page, size);
 
         Page<Board> boardPage = (keyword == null || keyword.isBlank())
                 ? boardRepository.findAllWithMemberByPage(pageable)

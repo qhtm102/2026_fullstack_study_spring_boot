@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.URI;
+import java.util.Set;
 
 // spring은 오류가 발생하면 "/error" 요청을 발생 -> BasicErrorController가 이 요청을 처리
 // 변경하고 싶으면 ErrorController를 구현한 Controller를 만들고 "/error" 요청에 대한 처리기 구현
 
 @Controller
 public class CustomErrorController implements ErrorController {
+
+    private static final Set<Integer> SUPPORTED_STATUS_CODES = Set.of(403, 404, 500);
 
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, RedirectAttributes redirectAttributes) {
@@ -35,6 +38,10 @@ public class CustomErrorController implements ErrorController {
                 return "redirect:" + path;
             }
             return "redirect:/boards/create";
+        }
+
+        if (statusCode != null && SUPPORTED_STATUS_CODES.contains(statusCode)) {
+            return "error/" + statusCode;
         }
 
         // Return a default error page template (e.g., error/error.html) for other errors

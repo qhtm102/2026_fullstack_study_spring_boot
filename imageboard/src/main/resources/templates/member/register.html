@@ -33,7 +33,7 @@
                 <label for="passwordConfirm">비밀번호 확인</label>
                 <input class="form-control" type="password" id="passwordConfirm"
                        th:field="*{passwordConfirm}" placeholder="비밀번호를 다시 입력하세요">
-                <p class="error-message" th:if="${#fields.hasError('passwordConfirm')}"
+                <p class="error-message" th:if="${#fields.hasErrors('passwordConfirm')}"
                    th:errors="*{passwordConfirm}"></p>
             </div>
 
