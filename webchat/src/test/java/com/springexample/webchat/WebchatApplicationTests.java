@@ -1,4 +1,4 @@
-package com.spring.example.webchat;
+package com.springexample.webchat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

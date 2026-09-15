@@ -35,7 +35,11 @@ public class LikeApiController {
             @PathVariable Long boardId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
+        System.out.println("boardId: " + boardId );
+
         LikeResult result = likeService.toggle(boardId, userDetails.getMemberId());
+
+        System.out.println("result : " + result);
         return ResponseEntity.ok(result);
     }
 }

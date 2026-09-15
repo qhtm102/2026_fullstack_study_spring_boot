@@ -1,4 +1,4 @@
-package com.spring.example.webchat.handler;
+package com.springexample.webchat.handler;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;

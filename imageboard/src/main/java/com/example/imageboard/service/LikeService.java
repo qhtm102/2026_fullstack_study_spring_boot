@@ -29,11 +29,13 @@ public class LikeService {
     public LikeResult toggle(Long boardId, Long memberId) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글 번호입니다."));
+        System.out.println("boardId: " + boardId + " / memberId: " + memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 아이디입니다."));
 
         boolean alreadyLiked = boardLikeRepository
                 .existsByBoardIdAndMemberId(boardId, memberId);
+        System.out.println("alreadyLiked: " + alreadyLiked);
 
         if (alreadyLiked) {
             boardLikeRepository.deleteByBoardIdAndMemberId(boardId, memberId);

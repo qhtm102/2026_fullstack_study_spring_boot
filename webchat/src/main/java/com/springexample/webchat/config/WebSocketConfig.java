@@ -1,14 +1,12 @@
-package com.spring.example.webchat.config;
+package com.springexample.webchat.config;
 
-import com.spring.example.webchat.handler.EchoWebSocketHandler;
+import com.springexample.webchat.handler.EchoWebSocketHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-@Configuration
-@EnableWebSocket  // WebSocket 기능 활성화
+//@Configuration
+//@EnableWebSocket  // WebSocket 기능 활성화
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketConfigurer {
 

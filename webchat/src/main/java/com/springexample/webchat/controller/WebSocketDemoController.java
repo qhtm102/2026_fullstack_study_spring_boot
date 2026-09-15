@@ -1,4 +1,4 @@
-package com.spring.example.webchat.controller;
+package com.springexample.webchat.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,5 +12,11 @@ public class WebSocketDemoController {
     public String echoTestForm() {
 
         return "demo/echo-test";
+    }
+
+    @GetMapping(path = "/echo-stomp-test")
+    public String echoStompTestForm() {
+
+        return "demo/echo-stomp-test";
     }
 }

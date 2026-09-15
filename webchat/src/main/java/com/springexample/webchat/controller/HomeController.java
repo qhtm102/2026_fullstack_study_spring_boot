@@ -1,4 +1,4 @@
-package com.spring.example.webchat.controller;
+package com.springexample.webchat.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
