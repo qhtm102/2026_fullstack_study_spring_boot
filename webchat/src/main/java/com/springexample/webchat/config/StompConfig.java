@@ -22,6 +22,9 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
         // 클라이언트가 서버로 메시지를 보낼 때 사용할 prefix
         // @MessageMapping 메서드로 라우팅됨
         registry.setApplicationDestinationPrefixes("/app");
+
+        // 사용자별 개인 채널을 위한 prefix 설정 (기본값: /user)
+        registry.setUserDestinationPrefix("/user");
     }
 
     /**

@@ -1,21 +1,27 @@
 package com.springexample.webchat.config;
 
-import com.springexample.webchat.handler.EchoWebSocketHandler;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.*;
 
-//@Configuration
-//@EnableWebSocket  // WebSocket 기능 활성화
-@RequiredArgsConstructor
-public class WebSocketConfig implements WebSocketConfigurer {
-
-    private final EchoWebSocketHandler echoWebSocketHandler;
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/topic", "/queue");
+        registry.setApplicationDestinationPrefixes("/app");
+        registry.setUserDestinationPrefix("/user");
+    }
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry
-                .addHandler(echoWebSocketHandler, "/ws/echo")  // 엔드포인트 등록
-                .setAllowedOrigins("*");                        // CORS 허용 (개발 환경)
+                .addEndpoint("/ws")
+                .setAllowedOriginPatterns("*")
+                .addInterceptors(new UsernameHandshakeInterceptor()) // username 추출
+                .setHandshakeHandler(new CustomHandshakeHandler())   // Principal 등록
+                .withSockJS();
     }
 }
